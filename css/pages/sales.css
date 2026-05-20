@@ -1,0 +1,44 @@
+.sales-layout {
+    display: grid;
+    grid-template-columns: 360px 1fr;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    max-width: 100%;
+    box-sizing: border-box;
+    height: calc(100vh - 65px); /* Adjusted for navbar */
+    overflow: hidden;
+}
+
+.sales-form-card {
+    height: 100%;
+    overflow-y: auto;
+    scrollbar-width: thin;
+}
+
+.sales-register-card {
+    min-width: 0;
+    height: 100%;
+    overflow-y: auto;
+}
+
+
+/* Specific density for Sales table */
+.sales-table th {
+    font-size: 0.65rem !important;
+    padding: 0.5rem 0.75rem !important;
+}
+
+.sales-table td {
+    font-size: 0.75rem !important;
+    padding: 0.625rem 0.75rem !important;
+}
+
+@media (max-width: 1200px) {
+    .sales-layout {
+        grid-template-columns: 1fr;
+    }
+    
+    .sales-form-card {
+        position: static;
+    }
+}

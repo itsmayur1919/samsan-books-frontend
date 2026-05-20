@@ -1,0 +1,33 @@
+body {
+    font-family: var(--font-sans);
+    color: var(--text-main);
+    font-size: 14px; /* Slightly smaller for professional feel */
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    font-weight: 600; /* Modern semi-bold */
+    letter-spacing: -0.02em;
+    color: var(--text-main);
+}
+
+h1 { font-size: 2.25rem; }
+h2 { font-size: 1.875rem; }
+h3 { font-size: 1.5rem; }
+h4 { font-size: 1.25rem; }
+h5 { font-size: 1.125rem; }
+h6 { font-size: 1rem; }
+
+p {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: var(--text-muted);
+}
+
+.text-sm { font-size: 0.875rem; }
+.text-xs { font-size: 0.75rem; }
+.font-mono { font-family: var(--font-mono); }
+

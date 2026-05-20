@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Samsan Books</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/main.css">
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f1f5f9 0%, #cbd5e1 100%);
+            padding: 2rem;
+        }
+        .auth-card {
+            width: 100%;
+            max-width: 400px;
+            background: var(--bg-card);
+            backdrop-filter: blur(var(--glass-blur));
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            padding: 2.5rem;
+            animation: fadeIn 0.5s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .auth-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .auth-header h1 {
+            font-size: 1.75rem;
+            margin-bottom: 0.5rem;
+        }
+        .auth-header p {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+        .success-message {
+            background: #dcfce7;
+            color: #166534;
+            padding: 0.75rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            margin-bottom: 1.5rem;
+            display: none;
+            text-align: center;
+            font-weight: 600;
+        }
+        .error-message {
+            background: #fef2f2;
+            color: #991b1b;
+            padding: 0.75rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+        .footer-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+        .footer-link a {
+            color: var(--primary);
+            font-weight: 600;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-card">
+        <div class="auth-header">
+            <div class="logo-icon" style="margin: 0 auto 1.5rem;"></div>
+            <h1>Welcome Back</h1>
+            <p>Enter your credentials to access your dashboard</p>
+        </div>
+
+        <div id="successMessage" class="success-message">
+            Signup successful! Please login.
+        </div>
+
+        <div id="errorMessage" class="error-message"></div>
+
+        <form id="loginForm">
+            <div class="form-group">
+                <label>EMAIL ADDRESS</label>
+                <input type="email" id="email" class="form-control" placeholder="john@example.com" required>
+            </div>
+            <div class="form-group">
+                <label>PASSWORD</label>
+                <input type="password" id="password" class="form-control" placeholder="••••••••" required>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; color: var(--text-muted); cursor: pointer;">
+                    <input type="checkbox" style="accent-color: var(--primary);"> Remember me
+                </label>
+                <a href="#" style="font-size: 0.8rem; color: var(--primary); text-decoration: none; font-weight: 600;">Forgot password?</a>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.75rem; font-size: 1rem;">
+                Login
+            </button>
+        </form>
+
+        <div class="footer-link">
+            Don't have an account? <a href="signup.html">Create one</a>
+        </div>
+    </div>
+
+    <script type="module">
+        import { login } from './js/modules/auth/auth.service.js';
+
+        const form = document.getElementById('loginForm');
+        const errorDiv = document.getElementById('errorMessage');
+        const successDiv = document.getElementById('successMessage');
+
+        // Check for signup success param
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('signup') === 'success') {
+            successDiv.style.display = 'block';
+        }
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            errorDiv.style.display = 'none';
+            successDiv.style.display = 'none';
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                const response = await login({ email, password });
+                if (response.success) {
+                    window.location.href = 'index.html';
+                } else {
+                    errorDiv.textContent = response.message || 'Login failed';
+                    errorDiv.style.display = 'block';
+                }
+            } catch (err) {
+                errorDiv.textContent = 'An unexpected error occurred';
+                errorDiv.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>

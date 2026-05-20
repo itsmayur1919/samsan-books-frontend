@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Samsan Books</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="./css/main.css">
+</head>
+
+<body>
+    <div id="error-display" style="display: none; background: #fee2e2; color: #991b1b; padding: 1rem; border: 1px solid #f87171; font-family: monospace; position: fixed; top: 0; left: 0; right: 0; z-index: 9999;">
+        <strong>JavaScript Error Detected:</strong>
+        <pre id="error-content"></pre>
+    </div>
+    <script>
+        window.onerror = function(msg, url, lineNo, columnNo, error) {
+            const display = document.getElementById('error-display');
+            const content = document.getElementById('error-content');
+            display.style.display = 'block';
+            content.textContent = `${msg}\nat ${url}:${lineNo}:${columnNo}`;
+            return false;
+        };
+        window.onunhandledrejection = function(event) {
+            const display = document.getElementById('error-display');
+            const content = document.getElementById('error-content');
+            display.style.display = 'block';
+            content.textContent = `Unhandled Promise Rejection: ${event.reason}`;
+        };
+    </script>
+
+    <div class="app">
+
+        <!-- Navbar -->
+        <header id="navbar"></header>
+
+        <!-- Main App -->
+        <main class="main">
+
+            <!-- Dynamic Page Header -->
+            <section id="page-header"></section>
+
+            <!-- Reports -->
+            <section id="reportsView" class="view active"></section>
+
+            <!-- Purchases -->
+            <section id="purchaseView" class="view"></section>
+
+            <!-- Sales -->
+            <section id="salesView" class="view"></section>
+
+            <!-- Cash -->
+            <section id="cashView" class="view"></section>
+
+        </main>
+
+    </div>
+
+    <script type="module" src="./js/app.js"></script>
+</body>
+
+</html>

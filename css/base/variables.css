@@ -1,0 +1,37 @@
+:root {
+    /* Core Palette - Premium HSL */
+    --primary-h: 235;
+    --primary-s: 75%;
+    --primary-l: 60%;
+    
+    --primary: hsl(var(--primary-h), var(--primary-s), var(--primary-l));
+    --primary-hover: hsl(var(--primary-h), var(--primary-s), 50%);
+    --primary-light: hsl(var(--primary-h), var(--primary-s), 95%);
+    
+    --accent-red: #ef4444;
+    --accent-blue: #3b82f6;
+    
+    --bg-app: #f1f5f9;
+    --bg-card: rgba(255, 255, 255, 0.85);
+    --bg-glass: rgba(255, 255, 255, 0.7);
+    
+    --text-main: #0f172a;
+    --text-muted: #64748b;
+    --text-on-primary: #ffffff;
+    
+    --border: rgba(226, 232, 240, 0.8);
+    --border-glass: rgba(255, 255, 255, 0.5);
+    
+    --radius-sm: 8px;
+    --radius: 16px;
+    --radius-lg: 24px;
+    
+    --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+    --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 10px 10px -5px rgba(0, 0, 0, 0.03);
+    
+    --glass-blur: 12px;
+    
+    --font-sans: 'DM Sans', system-ui, -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+}
+

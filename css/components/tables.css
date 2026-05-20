@@ -1,0 +1,44 @@
+.ledger-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.ledger-table th {
+    text-align: left;
+    padding: 0.75rem 1rem;
+    background: rgba(0, 0, 0, 0.02);
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+}
+
+.ledger-table td {
+    padding: 0.875rem 1rem;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.875rem;
+    color: var(--text-main);
+}
+
+.ledger-table tr:last-child td {
+    border-bottom: none;
+}
+
+.ledger-table tr:hover td {
+    background: rgba(99, 102, 241, 0.02);
+}
+
+/* Specific styling for numbers */
+.num-cell {
+    font-family: var(--font-mono);
+    text-align: right;
+    font-weight: 500;
+}
+
+.text-cell {
+    font-weight: 600;
+}

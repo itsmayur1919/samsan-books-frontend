@@ -1,0 +1,57 @@
+.cash-layout {
+    display: grid;
+    grid-template-columns: 360px 1fr;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.cash-form-card {
+    height: max-content;
+    position: sticky;
+    top: 5.5rem;
+}
+
+.cash-register-card {
+    min-width: 0;
+}
+
+/* Specific styling for opening balance group */
+.opening-balance-group {
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-end;
+    background: var(--primary-light);
+    padding: 1rem;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    border: 1px solid rgba(99, 102, 241, 0.1);
+}
+
+.opening-balance-group .form-group {
+    margin-bottom: 0;
+    flex: 1;
+}
+
+/* Summary chips in cash ledger */
+.cash-summary {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+}
+
+.cash-summary .chip {
+    padding: 0.5rem 1rem;
+}
+
+@media (max-width: 1200px) {
+    .cash-layout {
+        grid-template-columns: 1fr;
+    }
+    
+    .cash-form-card {
+        position: static;
+    }
+}

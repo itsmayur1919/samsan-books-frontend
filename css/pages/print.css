@@ -1,0 +1,237 @@
+/* =============================================
+   PRINT STYLES — Professional PDF Generation
+   ============================================= */
+
+@media print {
+    /* 1. Reset Page and Base Styles */
+    @page {
+        margin: 1.5cm;
+        size: A4 portrait;
+    }
+
+    body {
+        background: white !important;
+        color: black !important;
+        font-size: 10pt;
+    }
+
+    /* 2. Hide UI Elements Unnecessary for Print */
+    #navbar,
+    .nav,
+    .header-actions,
+    .filter-card,
+    .filter-bar,
+    .purchase-form-card,
+    .sales-form-card,
+    .cash-form-card,
+    .form-actions,
+    .btn-action,
+    .btn,
+    button,
+    #reportRefreshBtn,
+    .toast-container {
+        display: none !important;
+    }
+
+    /* 3. Expand Main Content Layouts */
+    .app {
+        height: auto !important;
+        overflow: visible !important;
+    }
+
+    .main {
+        padding: 0 !important;
+        margin: 0 !important;
+        height: auto !important;
+        overflow: visible !important;
+    }
+
+    .page-content, 
+    .purchases-layout, 
+    .sales-layout, 
+    .cash-layout {
+        display: block !important;
+        padding: 0 !important;
+        max-width: none !important;
+    }
+
+    /* 4. Flatten Cards */
+    .card {
+        box-shadow: none !important;
+        border: none !important;
+        background: transparent !important;
+        padding: 0 !important;
+        margin-bottom: 2.5rem !important;
+        page-break-inside: avoid;
+    }
+
+    .card-head {
+        border-bottom: 2px solid #000 !important;
+        padding: 0 0 0.5rem 0 !important;
+        margin-bottom: 1rem !important;
+    }
+
+    .card-head h3 {
+        font-size: 14pt !important;
+        color: #000 !important;
+    }
+
+    .status-badge.auto {
+        border: 1px solid #ccc !important;
+        background: transparent !important;
+        color: #333 !important;
+    }
+
+    /* 5. Optimize Tables for Print */
+    .table-container {
+        overflow: visible !important;
+        box-shadow: none !important;
+        border: 1px solid #000 !important;
+        border-radius: 0 !important;
+    }
+
+    .ledger-table {
+        width: 100% !important;
+        border-collapse: collapse !important;
+    }
+
+    .ledger-table th {
+        background: #f0f0f0 !important;
+        color: #000 !important;
+        font-size: 9pt !important;
+        border-bottom: 2px solid #000 !important;
+        padding: 0.6rem 0.5rem !important;
+        text-transform: uppercase !important;
+    }
+
+    .ledger-table td {
+        font-size: 9pt !important;
+        color: #000 !important;
+        border-bottom: 1px solid #ccc !important;
+        padding: 0.5rem !important;
+    }
+
+    .ledger-table tbody tr {
+        page-break-inside: avoid;
+    }
+
+    .ledger-table tbody tr:nth-child(even) {
+        background: #fcfcfc !important;
+    }
+
+    .ledger-table tfoot .summary-row td {
+        background: #e8e8e8 !important;
+        font-weight: 800 !important;
+        border-top: 2px solid #000 !important;
+        border-bottom: 2px solid #000 !important;
+        color: #000 !important;
+    }
+
+    /* 6. GST Summary Cards Specific */
+    .gst-summary-grid {
+        display: flex !important;
+        flex-direction: row !important;
+        gap: 1.5rem !important;
+        page-break-inside: avoid;
+    }
+
+    .gst-card {
+        flex: 1 !important;
+        border: 1px solid #000 !important;
+        box-shadow: none !important;
+        background: transparent !important;
+        padding: 1.25rem !important;
+        border-radius: 0 !important;
+    }
+
+    .gst-card::before {
+        display: none !important; /* Hide colored accent line */
+    }
+
+    .gst-card-icon {
+        display: none !important; /* Hide emojis for professional look */
+    }
+
+    .gst-card-label {
+        font-size: 10pt !important;
+        color: #333 !important;
+        font-weight: bold !important;
+    }
+
+    .gst-card-value {
+        color: #000 !important;
+        font-size: 16pt !important;
+        margin-top: 0.25rem !important;
+    }
+
+    .gst-status-badge {
+        border: 1px solid #000 !important;
+        background: transparent !important;
+        color: #000 !important;
+        top: 1.25rem !important;
+        right: 1.25rem !important;
+    }
+
+    /* 7. Cash Summary Chips */
+    .cash-summary {
+        margin-top: 1.5rem !important;
+        display: flex !important;
+        gap: 1rem !important;
+        page-break-inside: avoid;
+    }
+
+    .chip {
+        border: 1px solid #000 !important;
+        box-shadow: none !important;
+        background: transparent !important;
+        color: #000 !important;
+        padding: 0.5rem 1rem !important;
+        border-radius: 0 !important;
+    }
+    
+    .chip-value {
+        color: #000 !important;
+    }
+
+    /* 8. Text Colors & Utilities */
+    .text-success, .text-danger, .text-warning {
+        color: #000 !important; /* Remove colors for B&W print */
+        font-weight: bold !important;
+    }
+    
+    /* View Header formatting */
+    .view-title h2 {
+        font-size: 22pt !important;
+        border-bottom: 2px solid #000 !important;
+        padding-bottom: 0.5rem !important;
+        margin-bottom: 0.5rem !important;
+        color: #000 !important;
+    }
+    
+    .view-title p {
+        font-size: 12pt !important;
+        color: #555 !important;
+        margin-bottom: 2rem !important;
+    }
+
+    /* Format pills to text */
+    .status-pill {
+        background: transparent !important;
+        border: 1px solid #000 !important;
+        color: #000 !important;
+        border-radius: 0 !important;
+        padding: 0.15rem 0.4rem !important;
+    }
+    
+    /* Add a professional header to every printed page */
+    body::before {
+        content: "Samsan Books | Professional Accounting Report";
+        display: block;
+        text-align: right;
+        font-size: 8pt;
+        color: #666;
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 5px;
+        margin-bottom: 15px;
+    }
+}

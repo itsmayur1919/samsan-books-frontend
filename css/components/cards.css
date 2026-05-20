@@ -1,0 +1,56 @@
+.card {
+    background: var(--bg-card);
+    backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 2rem;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+    box-shadow: var(--shadow-lg);
+}
+
+.card-head {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card-head h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+.reports-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+/* Horizontal Scroll Container for Tables in Cards */
+.table-container {
+    overflow-x: auto;
+    width: 100%;
+}
+
+.table-container::-webkit-scrollbar {
+    height: 6px;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+

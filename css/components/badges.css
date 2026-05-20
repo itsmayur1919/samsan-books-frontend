@@ -1,0 +1,35 @@
+.chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    gap: 0.5rem;
+    background: white;
+    border: 1px solid var(--border);
+    color: var(--text-main);
+    box-shadow: var(--shadow);
+}
+
+.chip-label {
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+.chip-value {
+    font-family: var(--font-mono);
+}
+
+.status-badge {
+    padding: 0.25rem 0.5rem;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.status-badge.auto {
+    background: rgba(59, 130, 246, 0.1);
+    color: var(--accent-blue);
+}
