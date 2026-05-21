@@ -7,20 +7,20 @@
  * - Otherwise → Use provided backend URL
  */
 
-// Check for manually set environment variable first
-const manualBackendUrl = import.meta.env.VITE_API_URL || window.__API_URL__;
+// Check for manually set override (set via script tag in HTML if needed)
+const manualBackendUrl = window.__API_URL__ || null;
 
 // Auto-detect based on hostname
 let API_BASE_URL;
 
 if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
     // Local development - use localhost backend
-    API_BASE_URL = 'http://localhost:8000/api/v1';
+    API_BASE_URL = manualBackendUrl || 'http://localhost:8000/api/v1';
 } else if (window.location.hostname === 'samsanbook.netlify.app') {
-    // Netlify production - check for environment variable or use manual URL
+    // Netlify production - use deployed backend URL
     API_BASE_URL = manualBackendUrl || 'https://api.yourdomain.com/api/v1';
 } else {
-    // Other environments - use manual URL or default
+    // Other environments
     API_BASE_URL = manualBackendUrl || 'http://localhost:8000/api/v1';
 }
 
