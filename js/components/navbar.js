@@ -56,8 +56,8 @@ export function renderNavbar() {
     });
 
     document.getElementById('exportBtn')?.addEventListener('click', async () => {
-        const { showToast, convertToCSV, downloadCSV } = await import('../../utils/helpers.js');
-        const { state } = await import('../../core/state.js');
+        const { showToast, convertToCSV, downloadCSV } = await import('../utils/helpers.js');
+        const { state } = await import('../core/state.js');
         
         showToast('Preparing global CSV export. It will be done.', 'info');
         

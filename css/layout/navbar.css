@@ -23,10 +23,28 @@
     min-width: max-content;
 }
 
+/* Image-based logo for navbar */
 .logo-icon-img {
-    height: 38px; /* Prominent but properly scaled */
+    height: 36px;
     width: auto;
-    object-fit: contain; /* Prevents stretching */
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+/* Fallback div-based logo (login/signup pages) */
+.logo-icon {
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    border-radius: 8px;
+    box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.3);
+    flex-shrink: 0;
+}
+
+.brand-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .brand-text h1 {
@@ -34,15 +52,18 @@
     font-size: 1.1rem;
     font-weight: 700;
     line-height: 1.2;
+    white-space: nowrap;
 }
 
 .brand-text p {
     margin: 0;
-    font-size: 0.65rem;
+    font-size: 0.6rem;
     font-weight: 600;
     color: var(--text-muted);
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.08em;
+    line-height: 1.3;
+    white-space: nowrap;
 }
 
 /* Navigation Section */

@@ -1,23 +1,9 @@
-# Netlify Redirects Configuration
-# Important: Keep static file rules BEFORE the SPA fallback rule
+# Netlify Redirects - SPA Configuration
+# DO NOT modify unless you know what you're doing
 
-# Don't redirect static files - serve them as-is
-/js/*             200
-/css/*            200
-/assets/*         200
-/fonts/*          200
+# 1. Proxy API calls to localhost backend during local dev
+/api/*  http://localhost:8000/api/:splat  200
 
-# Handle specific file types
-/*.css            200
-/*.js             200
-/*.json           200
-/*.svg            200
-/*.png            200
-/*.jpg            200
-/*.jpeg           200
-/*.gif            200
-/*.ico            200
+# 2. SPA fallback - must be LAST
+/*      /index.html   200
 
-# SPA fallback - redirect all other requests to index.html
-# This must be the LAST rule
-/*                /index.html   200
