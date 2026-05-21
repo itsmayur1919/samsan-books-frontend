@@ -1,0 +1,6 @@
+# Netlify Redirects Configuration
+# This file works in conjunction with netlify.toml
+
+# SPA fallback - redirect all requests to index.html
+# The ! means "if the file doesn't exist"
+/* /index.html 200

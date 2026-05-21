@@ -1,0 +1,14 @@
+# Netlify Headers Configuration
+# Set correct MIME types for JavaScript files
+
+/js/*.js
+  Content-Type: application/javascript; charset=utf-8
+
+/js/**/*.js
+  Content-Type: application/javascript; charset=utf-8
+
+/css/*.css
+  Content-Type: text/css; charset=utf-8
+
+/css/**/*.css
+  Content-Type: text/css; charset=utf-8
