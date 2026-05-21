@@ -1,6 +1,23 @@
 # Netlify Redirects Configuration
-# This file works in conjunction with netlify.toml
+# Important: Keep static file rules BEFORE the SPA fallback rule
 
-# SPA fallback - redirect all requests to index.html
-# The ! means "if the file doesn't exist"
-/* /index.html 200
+# Don't redirect static files - serve them as-is
+/js/*             200
+/css/*            200
+/assets/*         200
+/fonts/*          200
+
+# Handle specific file types
+/*.css            200
+/*.js             200
+/*.json           200
+/*.svg            200
+/*.png            200
+/*.jpg            200
+/*.jpeg           200
+/*.gif            200
+/*.ico            200
+
+# SPA fallback - redirect all other requests to index.html
+# This must be the LAST rule
+/*                /index.html   200
