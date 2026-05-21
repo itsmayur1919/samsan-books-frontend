@@ -17,8 +17,8 @@ if (window.location.hostname === 'localhost' || window.location.hostname === '12
     // Local development - use localhost backend
     API_BASE_URL = manualBackendUrl || 'http://localhost:8000/api/v1';
 } else if (window.location.hostname === 'samsanbook.netlify.app') {
-    // Netlify production - pointing to LOCAL backend as requested
-    API_BASE_URL = manualBackendUrl || 'http://localhost:8000/api/v1';
+    // Netlify production - pointing to DEPLOYED Render backend
+    API_BASE_URL = manualBackendUrl || 'https://samsan-books-api.onrender.com/api/v1';
 } else {
     // Other environments
     API_BASE_URL = manualBackendUrl || 'http://localhost:8000/api/v1';
