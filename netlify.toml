@@ -1,9 +1,0 @@
-# Netlify Configuration for Samsan Books Frontend
-#
-# This is a multi-page vanilla JS app (NOT a SPA).
-# Each HTML file (index.html, login.html, signup.html) is served directly.
-# No SPA fallback redirect is needed.
-
-[build]
-  command = "echo 'Frontend ready'"
-  publish = "."
