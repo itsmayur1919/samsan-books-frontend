@@ -3,9 +3,7 @@
 # This repo contains ONLY the frontend code.
 # The repo root IS the publish directory.
 
-[build]
-  command = "echo 'Frontend ready'"
-  publish = "."
+
 
 # Security & Caching Headers
 [[headers]]
