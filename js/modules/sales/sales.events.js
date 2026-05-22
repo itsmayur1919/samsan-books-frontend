@@ -21,6 +21,8 @@ export async function initializeSalesEvents() {
     container.addEventListener('submit', async (e) => {
         if (e.target.id === 'salesForm') {
             e.preventDefault();
+            const form = e.target;
+            const editId = form.dataset.editId;
 
             const payload = {
                 month: document.getElementById('sMonth').value,
@@ -37,10 +39,16 @@ export async function initializeSalesEvents() {
             };
 
             try {
-                // Post to API
-                await createSale(payload);
+                if (editId) {
+                    const { updateSale } = await import('../../services/sales.service.js');
+                    await updateSale(editId, payload);
+                    showToast('Sale updated successfully!', 'success');
+                } else {
+                    await createSale(payload);
+                    showToast('Sale added successfully!', 'success');
+                }
                 
-                // Re-fetch authoritative list (which includes calculated GST values)
+                // Re-fetch authoritative list
                 const data = await getSales();
                 state.sales = data || [];
                 
@@ -50,24 +58,27 @@ export async function initializeSalesEvents() {
                 // Update Reports in background
                 triggerReportsRefresh();
                 
-                // Clear inputs but keep some defaults
-                e.target.reset();
+                // Clear inputs
+                form.reset();
+                delete form.dataset.editId;
+                document.getElementById('sAddBtn').textContent = 'Add';
                 document.getElementById('sGstPercent').value = 18;
                 document.getElementById('sReceivedAmount').value = 0;
                 
-                showToast('Sale added successfully!', 'success');
-                
             } catch(err) {
-                showToast("Error adding sale: " + err.message, 'error');
+                showToast("Error saving sale: " + err.message, 'error');
             }
         }
     });
 
     // 3. Event Delegation for Buttons
-    container.addEventListener('click', (e) => {
+    container.addEventListener('click', async (e) => {
         // Clear Form Button
         if (e.target.id === 'sClearBtn') {
-            document.getElementById('salesForm').reset();
+            const form = document.getElementById('salesForm');
+            form.reset();
+            delete form.dataset.editId;
+            document.getElementById('sAddBtn').textContent = 'Add';
             document.getElementById('sGstPercent').value = 18;
             document.getElementById('sReceivedAmount').value = 0;
         }
@@ -81,6 +92,48 @@ export async function initializeSalesEvents() {
             const csvStr = convertToCSV(state.sales);
             downloadCSV(csvStr, 'sales_register.csv');
             showToast('Sales exported successfully.', 'success');
+        }
+
+        // Edit Sale
+        if (e.target.classList.contains('edit-sale-btn')) {
+            const id = e.target.dataset.id;
+            const item = state.sales.find(s => s.id === id);
+            if (!item) return;
+
+            document.getElementById('sMonth').value = item.month || '';
+            document.getElementById('sInvoiceNo').value = item.invoice_no || '';
+            document.getElementById('sInvoiceDate').value = item.invoice_date || '';
+            document.getElementById('sCustomerName').value = item.customer_name || '';
+            document.getElementById('sServiceDesc').value = item.service_desc || '';
+            document.getElementById('sTaxType').value = item.tax_type || '';
+            document.getElementById('sGstPercent').value = item.gst_percent || 18;
+            document.getElementById('sBasicAmount').value = item.basic_amount || 0;
+            document.getElementById('sReceivedAmount').value = item.received_amount || 0;
+            document.getElementById('sReceivedDate').value = item.received_date || '';
+            document.getElementById('sPaymentMode').value = item.payment_mode || '';
+
+            const form = document.getElementById('salesForm');
+            form.dataset.editId = id;
+            document.getElementById('sAddBtn').textContent = 'Update';
+            showToast('Editing sale entry...', 'info');
+        }
+
+        // Delete Sale
+        if (e.target.classList.contains('delete-sale-btn')) {
+            if (!confirm("Are you sure you want to delete this sale entry?")) return;
+            const id = e.target.dataset.id;
+            try {
+                const { deleteSale } = await import('../../services/sales.service.js');
+                await deleteSale(id);
+                showToast('Sale deleted successfully.', 'success');
+                
+                const data = await getSales();
+                state.sales = data || [];
+                renderSalesTable();
+                triggerReportsRefresh();
+            } catch (err) {
+                showToast("Error deleting sale: " + err.message, 'error');
+            }
         }
     });
 }

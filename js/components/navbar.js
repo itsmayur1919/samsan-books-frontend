@@ -7,10 +7,6 @@ export function renderNavbar() {
 
                 <div class="brand">
                     <img src="./assets/logo.png" class="logo-icon-img" alt="Samsan Books Logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
-                    <div class="brand-text">
-                        <h1>Samsan Books</h1>
-                        <p>BUSINESS ACCOUNTING PLATFORM</p>
-                    </div>
                 </div>
 
                 <nav class="nav">
@@ -59,6 +55,15 @@ export function renderNavbar() {
         const { showToast, convertToCSV, downloadCSV } = await import('../utils/helpers.js');
         const { state } = await import('../core/state.js');
         
+        const hasPurchases = state.purchases && state.purchases.length > 0;
+        const hasSales = state.sales && state.sales.length > 0;
+        const hasCash = state.cash && state.cash.length > 0;
+
+        if (!hasPurchases && !hasSales && !hasCash) {
+            showToast('No data available to export.', 'warning');
+            return;
+        }
+
         showToast('Preparing global CSV export. It will be done.', 'info');
         
         setTimeout(() => {

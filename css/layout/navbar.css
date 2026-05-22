@@ -25,7 +25,7 @@
 
 /* Image-based logo for navbar */
 .logo-icon-img {
-    height: 36px;
+    height: 48px;
     width: auto;
     object-fit: contain;
     flex-shrink: 0;
@@ -161,4 +161,48 @@
     transform: translateY(-1px);
     box-shadow: var(--shadow);
 }
+
+/* ── Responsive Navbar ── */
+@media (max-width: 1024px) {
+    .app-bar-inner {
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+    
+    .nav {
+        order: 3;
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 0.25rem;
+    }
+    
+    .header-actions {
+        margin-left: auto;
+    }
+}
+
+@media (max-width: 768px) {
+    .app-bar {
+        padding: 0.75rem 1rem;
+    }
+    
+    .brand {
+        flex: 1;
+    }
+    
+    .logo-icon-img {
+        height: 36px; /* Slightly smaller logo on mobile */
+    }
+    
+    .header-actions {
+        gap: 0.5rem;
+    }
+    
+    .btn-action {
+        padding: 0.4rem 0.75rem;
+        font-size: 0.75rem;
+    }
+}
+
 

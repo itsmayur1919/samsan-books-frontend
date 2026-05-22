@@ -21,6 +21,8 @@ export async function initializePurchaseEvents() {
     container.addEventListener('submit', async (e) => {
         if (e.target.id === 'purchaseForm') {
             e.preventDefault();
+            const form = e.target;
+            const editId = form.dataset.editId;
 
             const payload = {
                 month: document.getElementById('pMonth').value,
@@ -38,10 +40,16 @@ export async function initializePurchaseEvents() {
             };
 
             try {
-                // Post to API
-                await createPurchase(payload);
+                if (editId) {
+                    const { updatePurchase } = await import('../../services/purchases.service.js');
+                    await updatePurchase(editId, payload);
+                    showToast('Purchase updated successfully!', 'success');
+                } else {
+                    await createPurchase(payload);
+                    showToast('Purchase added successfully!', 'success');
+                }
                 
-                // Re-fetch authoritative list (which includes calculated GST values)
+                // Re-fetch authoritative list
                 const data = await getPurchases();
                 state.purchases = data || [];
                 
@@ -51,26 +59,41 @@ export async function initializePurchaseEvents() {
                 // Update Reports in background
                 triggerReportsRefresh();
                 
-                // Clear inputs but keep some defaults
-                e.target.reset();
+                // Clear inputs
+                form.reset();
+                delete form.dataset.editId;
+                document.getElementById('pAddBtn').textContent = 'Add';
                 document.getElementById('pGstPercent').value = 18;
+                document.getElementById('pTdsPercent').value = 0;
                 document.getElementById('pTdsAmount').value = 0;
                 document.getElementById('pPaidAmount').value = 0;
                 
-                showToast('Purchase added successfully!', 'success');
-                
             } catch(err) {
-                showToast("Error adding purchase: " + err.message, 'error');
+                showToast("Error saving purchase: " + err.message, 'error');
             }
         }
     });
 
+    // Handle Auto-calculation of TDS Amount
+    container.addEventListener('input', (e) => {
+        if (e.target.id === 'pBasicAmount' || e.target.id === 'pTdsPercent') {
+            const basic = parseFloat(document.getElementById('pBasicAmount').value) || 0;
+            const percent = parseFloat(document.getElementById('pTdsPercent').value) || 0;
+            const amount = basic * (percent / 100);
+            document.getElementById('pTdsAmount').value = amount.toFixed(2);
+        }
+    });
+
     // 3. Event Delegation for Buttons
-    container.addEventListener('click', (e) => {
+    container.addEventListener('click', async (e) => {
         // Clear Form Button
         if (e.target.id === 'pClearBtn') {
-            document.getElementById('purchaseForm').reset();
+            const form = document.getElementById('purchaseForm');
+            form.reset();
+            delete form.dataset.editId;
+            document.getElementById('pAddBtn').textContent = 'Add';
             document.getElementById('pGstPercent').value = 18;
+            document.getElementById('pTdsPercent').value = 0;
             document.getElementById('pTdsAmount').value = 0;
             document.getElementById('pPaidAmount').value = 0;
         }
@@ -84,6 +107,59 @@ export async function initializePurchaseEvents() {
             const csvStr = convertToCSV(state.purchases);
             downloadCSV(csvStr, 'purchases_register.csv');
             showToast('Purchases exported successfully.', 'success');
+        }
+
+        // Edit Purchase
+        if (e.target.classList.contains('edit-purchase-btn')) {
+            const id = e.target.dataset.id;
+            const item = state.purchases.find(p => p.id === id);
+            if (!item) return;
+
+            document.getElementById('pMonth').value = item.month || '';
+            document.getElementById('pInvoiceNo').value = item.invoice_no || '';
+            document.getElementById('pInvoiceDate').value = item.invoice_date || '';
+            document.getElementById('pVendor').value = item.vendor_name || '';
+            document.getElementById('pServiceDesc').value = item.service_desc || '';
+            document.getElementById('pTaxType').value = item.tax_type || '';
+            document.getElementById('pGstPercent').value = item.gst_percent || 18;
+            document.getElementById('pBasicAmount').value = item.basic_amount || 0;
+            document.getElementById('pTdsAmount').value = item.tds_amount || 0;
+            
+            // Calculate reverse TDS Percent
+            const basic = parseFloat(item.basic_amount) || 0;
+            const tdsAmt = parseFloat(item.tds_amount) || 0;
+            if (basic > 0 && tdsAmt > 0) {
+                document.getElementById('pTdsPercent').value = ((tdsAmt / basic) * 100).toFixed(2);
+            } else {
+                document.getElementById('pTdsPercent').value = 0;
+            }
+
+            document.getElementById('pPaidAmount').value = item.paid_amount || 0;
+            document.getElementById('pPaidDate').value = item.paid_date || '';
+            document.getElementById('pPaymentMode').value = item.payment_mode || '';
+
+            const form = document.getElementById('purchaseForm');
+            form.dataset.editId = id;
+            document.getElementById('pAddBtn').textContent = 'Update';
+            showToast('Editing purchase entry...', 'info');
+        }
+
+        // Delete Purchase
+        if (e.target.classList.contains('delete-purchase-btn')) {
+            if (!confirm("Are you sure you want to delete this purchase entry?")) return;
+            const id = e.target.dataset.id;
+            try {
+                const { deletePurchase } = await import('../../services/purchases.service.js');
+                await deletePurchase(id);
+                showToast('Purchase deleted successfully.', 'success');
+                
+                const data = await getPurchases();
+                state.purchases = data || [];
+                renderPurchaseTable();
+                triggerReportsRefresh();
+            } catch (err) {
+                showToast("Error deleting purchase: " + err.message, 'error');
+            }
         }
     });
 }

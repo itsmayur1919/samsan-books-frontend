@@ -131,6 +131,7 @@ export function renderSalesTable() {
                                     <th class="num-cell">TOTAL</th>
                                     <th class="num-cell">RECEIVED</th>
                                     <th class="num-cell">BALANCE</th>
+                                    <th>ACTION</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -150,9 +151,15 @@ export function renderSalesTable() {
                                         <td class="num-cell">${formatCurrency(row.total_amount)}</td>
                                         <td class="num-cell">${formatCurrency(row.received_amount || 0)}</td>
                                         <td class="num-cell" style="font-weight: 500;">${formatCurrency(row.balance_amount || 0)}</td>
+                                        <td>
+                                            <div class="action-buttons" style="display: flex; gap: 4px;">
+                                                <button type="button" class="btn btn-outline edit-sale-btn" data-id="${row.id}" style="padding: 2px 8px; font-size: 0.8rem;">Edit</button>
+                                                <button type="button" class="btn btn-outline delete-sale-btn" data-id="${row.id}" style="padding: 2px 8px; font-size: 0.8rem; color: var(--danger);">Del</button>
+                                            </div>
+                                        </td>
                                     </tr>
                                 `).join('') : `
-                                    <tr><td colspan="14" style="text-align: center; padding: 2rem; color: var(--text-muted);">No sales found. Use the form to add one.</td></tr>
+                                    <tr><td colspan="15" style="text-align: center; padding: 2rem; color: var(--text-muted);">No sales found. Use the form to add one.</td></tr>
                                 `}
                             </tbody>
                             <tfoot>
@@ -165,6 +172,7 @@ export function renderSalesTable() {
                                     <td class="num-cell">${formatCurrency(totals.total)}</td>
                                     <td class="num-cell">${formatCurrency(totals.received)}</td>
                                     <td class="num-cell">${formatCurrency(totals.balance)}</td>
+                                    <td></td>
                                 </tr>
                             </tfoot>
                         </table>

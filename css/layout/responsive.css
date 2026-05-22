@@ -1,0 +1,45 @@
+/* =============================================
+   RESPONSIVE OVERRIDES
+   Global mobile adjustments
+   ============================================= */
+
+@media (max-width: 1024px) {
+    /* Tablet & Small Desktop Adjustments */
+    :root {
+        --base-padding: 1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    /* Mobile Adjustments */
+    :root {
+        --base-padding: 0.75rem;
+    }
+
+    body {
+        font-size: 14px;
+    }
+    
+    .card-body {
+        padding: 1rem !important;
+    }
+    
+    .card-head {
+        padding: 1rem !important;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+    
+    .form-actions button {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Small Mobile Adjustments */
+    .filter-bar {
+        grid-template-columns: 1fr !important;
+    }
+}

@@ -84,9 +84,13 @@
 @media (max-width: 1200px) {
     .purchases-layout {
         grid-template-columns: 1fr;
+        height: auto;
+        overflow: visible;
     }
     
-    .purchase-form-card {
-        position: static;
+    .purchase-form-card,
+    .purchase-register-card {
+        height: auto;
+        overflow: visible;
     }
 }

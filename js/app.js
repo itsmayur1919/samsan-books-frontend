@@ -14,7 +14,7 @@ import { initializeSalesEvents } from './modules/sales/sales.events.js';
 import { initializeCashEvents } from './modules/cash/cash.events.js';
 import { isAuthenticated } from './modules/auth/auth.service.js';
 
-function bootstrap() {
+async function bootstrap() {
     try {
         console.log('Starting Samsan Books...');
         
@@ -24,23 +24,46 @@ function bootstrap() {
             return;
         }
 
+        // Show Global Loading State
+        const loader = document.createElement('div');
+        loader.id = 'globalLoader';
+        loader.innerHTML = `
+            <div style="position: fixed; inset: 0; background: var(--bg-body); z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem;">
+                <div style="width: 48px; height: 48px; border: 4px solid var(--border); border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite;"></div>
+                <h2 style="color: var(--text-main); font-weight: 600;">Loading Workspace...</h2>
+            </div>
+            <style>@keyframes spin { 100% { transform: rotate(360deg); } }</style>
+        `;
+        document.body.appendChild(loader);
+
         loadState();
         renderNavbar();
         initializeRouter();
+        
+        // Initial empty renders
         renderPurchaseTable();
         renderSalesTable();
         renderCashTable();
 
-        // Initialize Reports (fetches data from backend and renders UI)
-        initializeReports();
+        // Fetch all critical data concurrently
+        await Promise.allSettled([
+            initializePurchaseEvents(),
+            initializeSalesEvents(),
+            initializeCashEvents(),
+            initializeReports()
+        ]);
 
         setActiveView(state.currentView);
-        initializePurchaseEvents();
-        initializeSalesEvents();
-        initializeCashEvents();
         console.log('Samsan Books Ready');
+        
+        // Remove loading state
+        loader.style.opacity = '0';
+        loader.style.transition = 'opacity 0.4s ease';
+        setTimeout(() => loader.remove(), 400);
+
     } catch (error) {
         console.error('CRITICAL: Bootstrap failed', error);
+        document.getElementById('globalLoader')?.remove();
     }
 }
 

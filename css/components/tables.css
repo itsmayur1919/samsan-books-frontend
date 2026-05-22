@@ -42,3 +42,11 @@
 .text-cell {
     font-weight: 600;
 }
+
+/* ── Responsive Tables ── */
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 8px; /* Optional: smooth corners when scrolling */
+}

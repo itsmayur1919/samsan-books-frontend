@@ -62,6 +62,10 @@ export function renderPurchaseTable() {
                             <input type="number" id="pBasicAmount" class="form-control" placeholder="10000" required step="0.01">
                         </div>
                         <div class="form-group">
+                            <label>TDS %</label>
+                            <input type="number" id="pTdsPercent" class="form-control" value="0" step="0.01">
+                        </div>
+                        <div class="form-group">
                             <label>TDS AMOUNT</label>
                             <input type="number" id="pTdsAmount" class="form-control" value="0" step="0.01">
                         </div>
@@ -142,6 +146,7 @@ export function renderPurchaseTable() {
                                     <th class="num-cell">TDS</th>
                                     <th class="num-cell">PAYABLE</th>
                                     <th>STATUS</th>
+                                    <th>ACTION</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -162,9 +167,15 @@ export function renderPurchaseTable() {
                                         <td class="num-cell">${formatCurrency(row.tds_amount || 0)}</td>
                                         <td class="num-cell" style="font-weight: 500;">${formatCurrency(row.payable_amount || 0)}</td>
                                         <td><span class="status-pill ${row.status?.toLowerCase() || 'pending'}">${row.status || 'Pending'}</span></td>
+                                        <td>
+                                            <div class="action-buttons" style="display: flex; gap: 4px;">
+                                                <button type="button" class="btn btn-outline edit-purchase-btn" data-id="${row.id}" style="padding: 2px 8px; font-size: 0.8rem;">Edit</button>
+                                                <button type="button" class="btn btn-outline delete-purchase-btn" data-id="${row.id}" style="padding: 2px 8px; font-size: 0.8rem; color: var(--danger);">Del</button>
+                                            </div>
+                                        </td>
                                     </tr>
                                 `).join('') : `
-                                    <tr><td colspan="15" style="text-align: center; padding: 2rem; color: var(--text-muted);">No purchases found. Use the form to add one.</td></tr>
+                                    <tr><td colspan="16" style="text-align: center; padding: 2rem; color: var(--text-muted);">No purchases found. Use the form to add one.</td></tr>
                                 `}
                             </tbody>
                             <tfoot>
@@ -177,6 +188,7 @@ export function renderPurchaseTable() {
                                     <td class="num-cell">${formatCurrency(totals.total)}</td>
                                     <td class="num-cell">${formatCurrency(totals.tds)}</td>
                                     <td class="num-cell">${formatCurrency(totals.payable)}</td>
+                                    <td></td>
                                     <td></td>
                                 </tr>
                             </tfoot>

@@ -13,7 +13,7 @@ export async function createSale(payload) {
 
 export async function updateSale(id, payload) {
     return apiRequest(`/sales/${id}`, {
-        method: 'PATCH',
+        method: 'PUT',
         body: JSON.stringify(payload)
     });
 }

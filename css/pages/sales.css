@@ -36,9 +36,13 @@
 @media (max-width: 1200px) {
     .sales-layout {
         grid-template-columns: 1fr;
+        height: auto;
+        overflow: visible;
     }
     
-    .sales-form-card {
-        position: static;
+    .sales-form-card,
+    .sales-register-card {
+        height: auto;
+        overflow: visible;
     }
 }

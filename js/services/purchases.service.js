@@ -13,7 +13,7 @@ export async function createPurchase(payload) {
 
 export async function updatePurchase(id, payload) {
     return apiRequest(`/purchases/${id}`, {
-        method: 'PATCH',
+        method: 'PUT',
         body: JSON.stringify(payload)
     });
 }
