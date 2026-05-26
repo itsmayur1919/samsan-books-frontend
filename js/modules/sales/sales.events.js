@@ -41,18 +41,25 @@ export async function initializeSalesEvents() {
             try {
                 if (editId) {
                     const { updateSale } = await import('../../services/sales.service.js');
-                    await updateSale(editId, payload);
+                    const updatedItem = await updateSale(editId, payload);
+                    
+                    // Optimistic update: Replace in local state
+                    const index = state.sales.findIndex(s => s.id === editId);
+                    if (index !== -1) {
+                        state.sales[index] = updatedItem;
+                    }
+                    
                     showToast('Sale updated successfully!', 'success');
                 } else {
-                    await createSale(payload);
+                    const newItem = await createSale(payload);
+                    
+                    // Optimistic update: Add to top of local state
+                    state.sales.unshift(newItem);
+                    
                     showToast('Sale added successfully!', 'success');
                 }
                 
-                // Re-fetch authoritative list
-                const data = await getSales();
-                state.sales = data || [];
-                
-                // Re-render
+                // Re-render instantly without fetching
                 renderSalesTable();
                 
                 // Update Reports in background
@@ -122,16 +129,23 @@ export async function initializeSalesEvents() {
         if (e.target.classList.contains('delete-sale-btn')) {
             if (!confirm("Are you sure you want to delete this sale entry?")) return;
             const id = e.target.dataset.id;
+            
+            // Optimistic UI Update: Instantly remove and re-render
+            const originalSales = [...state.sales];
+            state.sales = state.sales.filter(s => s.id !== id);
+            renderSalesTable();
+            
             try {
                 const { deleteSale } = await import('../../services/sales.service.js');
                 await deleteSale(id);
                 showToast('Sale deleted successfully.', 'success');
                 
-                const data = await getSales();
-                state.sales = data || [];
-                renderSalesTable();
+                // Trigger reports refresh in background
                 triggerReportsRefresh();
             } catch (err) {
+                // Revert if failed
+                state.sales = originalSales;
+                renderSalesTable();
                 showToast("Error deleting sale: " + err.message, 'error');
             }
         }

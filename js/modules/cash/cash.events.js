@@ -35,16 +35,21 @@ export async function initializeCashEvents() {
             }
         }
 
-        // Clear All Entries
         if (e.target.id === 'clearCashBtn') {
             if(confirm("Are you sure you want to clear ALL petty cash entries?")) {
+                // Optimistic UI Update
+                const originalCash = [...state.cash];
+                state.cash = [];
+                renderCashTable();
+                
                 try {
                     await CashService.clearAllEntries();
-                    state.cash = [];
-                    renderCashTable();
                     setDefaultDateToToday();
                     showToast('All entries cleared', 'info');
                 } catch(err) {
+                    // Revert
+                    state.cash = originalCash;
+                    renderCashTable();
                     showToast("Error clearing entries: " + err.message, 'error');
                 }
             }
@@ -74,11 +79,12 @@ export async function initializeCashEvents() {
             };
 
             try {
-                await CashService.addEntry(entryData);
-                const data = await CashService.getDashboardData();
-                state.cash = data.entries || [];
+                const newEntry = await CashService.addEntry(entryData);
+                
+                // Optimistic update
+                state.cash.push(newEntry);
                 renderCashTable();
-                setDefaultDateToToday();
+                
                 setDefaultDateToToday();
                 // Reset form
                 document.getElementById('cashForm').reset();

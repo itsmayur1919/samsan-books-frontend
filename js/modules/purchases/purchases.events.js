@@ -42,18 +42,25 @@ export async function initializePurchaseEvents() {
             try {
                 if (editId) {
                     const { updatePurchase } = await import('../../services/purchases.service.js');
-                    await updatePurchase(editId, payload);
+                    const updatedItem = await updatePurchase(editId, payload);
+                    
+                    // Optimistic update: Replace in local state
+                    const index = state.purchases.findIndex(p => p.id === editId);
+                    if (index !== -1) {
+                        state.purchases[index] = updatedItem;
+                    }
+                    
                     showToast('Purchase updated successfully!', 'success');
                 } else {
-                    await createPurchase(payload);
+                    const newItem = await createPurchase(payload);
+                    
+                    // Optimistic update: Add to top of local state
+                    state.purchases.unshift(newItem);
+                    
                     showToast('Purchase added successfully!', 'success');
                 }
                 
-                // Re-fetch authoritative list
-                const data = await getPurchases();
-                state.purchases = data || [];
-                
-                // Re-render
+                // Re-render instantly without fetching
                 renderPurchaseTable();
                 
                 // Update Reports in background
@@ -148,16 +155,23 @@ export async function initializePurchaseEvents() {
         if (e.target.classList.contains('delete-purchase-btn')) {
             if (!confirm("Are you sure you want to delete this purchase entry?")) return;
             const id = e.target.dataset.id;
+            
+            // Optimistic UI Update: Instantly remove and re-render
+            const originalPurchases = [...state.purchases];
+            state.purchases = state.purchases.filter(p => p.id !== id);
+            renderPurchaseTable();
+            
             try {
                 const { deletePurchase } = await import('../../services/purchases.service.js');
                 await deletePurchase(id);
                 showToast('Purchase deleted successfully.', 'success');
                 
-                const data = await getPurchases();
-                state.purchases = data || [];
-                renderPurchaseTable();
+                // Trigger reports refresh in background
                 triggerReportsRefresh();
             } catch (err) {
+                // Revert if failed
+                state.purchases = originalPurchases;
+                renderPurchaseTable();
                 showToast("Error deleting purchase: " + err.message, 'error');
             }
         }
