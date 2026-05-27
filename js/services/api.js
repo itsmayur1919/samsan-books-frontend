@@ -27,7 +27,12 @@ export async function apiRequest(endpoint, options = {}) {
             throw new Error(errorData.detail || 'API request failed');
         }
         
-        return await response.json();
+        if (response.status === 204) {
+            return { success: true };
+        }
+        
+        const text = await response.text();
+        return text ? JSON.parse(text) : { success: true };
     } catch (error) {
         clearTimeout(timeoutId);
         if (error.name === 'AbortError') {

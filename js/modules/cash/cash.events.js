@@ -2,6 +2,7 @@ import { state } from '../../core/state.js';
 import { renderCashTable } from './cash.table.js';
 import { CashService } from './cash.service.js';
 import { convertToCSV, downloadCSV, showToast } from '../../utils/helpers.js';
+import { showAlertModal } from '../../components/modal.js';
 
 export async function initializeCashEvents() {
     try {
@@ -58,12 +59,12 @@ export async function initializeCashEvents() {
         // Export CSV
         if (e.target.id === 'exportCashCsvBtn') {
             if (!state.cash || state.cash.length === 0) {
-                showToast("No data to export.", 'error');
+                showAlertModal('NO DATA TO EXPORT', 'error', 'Export Failed');
                 return;
             }
             const csvStr = convertToCSV(state.cash);
             downloadCSV(csvStr, 'petty_cash_ledger.csv');
-            showToast('Petty cash exported successfully.', 'success');
+            showAlertModal('Petty cash exported successfully!', 'success', 'Export Complete');
         }
     });
 

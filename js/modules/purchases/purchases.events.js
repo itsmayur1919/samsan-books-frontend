@@ -2,6 +2,7 @@ import { state } from '../../core/state.js';
 import { renderPurchaseTable } from './purchases.table.js';
 import { createPurchase, getPurchases } from '../../services/purchases.service.js';
 import { convertToCSV, downloadCSV, showToast } from '../../utils/helpers.js';
+import { showAlertModal } from '../../components/modal.js';
 import { triggerReportsRefresh } from '../reports/reports.events.js';
 
 export async function initializePurchaseEvents() {
@@ -108,12 +109,12 @@ export async function initializePurchaseEvents() {
         // Export CSV
         if (e.target.id === 'pExportBtn') {
             if (!state.purchases || state.purchases.length === 0) {
-                showToast("No purchases to export.", 'error');
+                showAlertModal('NO DATA TO EXPORT', 'error', 'Export Failed');
                 return;
             }
             const csvStr = convertToCSV(state.purchases);
             downloadCSV(csvStr, 'purchases_register.csv');
-            showToast('Purchases exported successfully.', 'success');
+            showAlertModal('Purchases exported successfully!', 'success', 'Export Complete');
         }
 
         // Edit Purchase

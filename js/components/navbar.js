@@ -52,19 +52,20 @@ export function renderNavbar() {
     });
 
     document.getElementById('exportBtn')?.addEventListener('click', async () => {
-        const { showToast, convertToCSV, downloadCSV } = await import('../utils/helpers.js');
-        const { state } = await import('../core/state.js');
+        const { showToast, convertToCSV, downloadCSV } = await import('../utils/helpers.js?v=1.0.4');
+        const { showAlertModal } = await import('./modal.js?v=1.0.4');
+        const { state } = await import('../core/state.js?v=1.0.4');
         
         const hasPurchases = state.purchases && state.purchases.length > 0;
         const hasSales = state.sales && state.sales.length > 0;
         const hasCash = state.cash && state.cash.length > 0;
 
         if (!hasPurchases && !hasSales && !hasCash) {
-            showToast('No data available to export.', 'warning');
+            showAlertModal('NO DATA TO EXPORT', 'error', 'Export Failed');
             return;
         }
 
-        showToast('Preparing global CSV export. It will be done.', 'info');
+        showToast('Preparing global CSV export...', 'info');
         
         setTimeout(() => {
             if (state.purchases && state.purchases.length > 0) {
@@ -77,7 +78,7 @@ export function renderNavbar() {
                 downloadCSV(convertToCSV(state.cash), 'petty_cash_ledger.csv');
             }
             
-            showToast('Global export complete.', 'success');
+            showAlertModal('All data exported successfully!', 'success', 'Export Complete');
         }, 800);
     });
 }

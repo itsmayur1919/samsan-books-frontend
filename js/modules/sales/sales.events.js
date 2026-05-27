@@ -2,6 +2,7 @@ import { state } from '../../core/state.js';
 import { renderSalesTable } from './sales.table.js';
 import { createSale, getSales } from '../../services/sales.service.js';
 import { convertToCSV, downloadCSV, showToast } from '../../utils/helpers.js';
+import { showAlertModal } from '../../components/modal.js';
 import { triggerReportsRefresh } from '../reports/reports.events.js';
 
 export async function initializeSalesEvents() {
@@ -93,12 +94,12 @@ export async function initializeSalesEvents() {
         // Export CSV
         if (e.target.id === 'sExportBtn') {
             if (!state.sales || state.sales.length === 0) {
-                showToast("No sales to export.", 'error');
+                showAlertModal('NO DATA TO EXPORT', 'error', 'Export Failed');
                 return;
             }
             const csvStr = convertToCSV(state.sales);
             downloadCSV(csvStr, 'sales_register.csv');
-            showToast('Sales exported successfully.', 'success');
+            showAlertModal('Sales exported successfully!', 'success', 'Export Complete');
         }
 
         // Edit Sale
