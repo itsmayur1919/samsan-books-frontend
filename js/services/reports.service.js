@@ -1,24 +1,10 @@
-import { CONFIG } from '../core/config.js';
-import { getToken } from '../modules/auth/auth.service.js';
+/**
+ * Reports Service
+ * 
+ * Handles reports-related API calls using the standardized API client.
+ */
 
-async function authFetch(url, options = {}) {
-    const token = getToken();
-    const headers = {
-        'Content-Type': 'application/json',
-        ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
-        ...options.headers
-    };
-
-    const response = await fetch(url, { ...options, headers });
-    if (!response.ok) {
-        if (response.status === 401) {
-            console.error("Unauthorized. Token may be expired.");
-        }
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.detail || 'API request failed');
-    }
-    return response.json();
-}
+import { apiGet, APIError } from './api.js';
 
 export const ReportService = {
     /**
@@ -26,11 +12,15 @@ export const ReportService = {
      * @param {string} month - Optional month filter (e.g., 'Apr-2026')
      */
     async getMonthSummary(month = null) {
-        const url = new URL(`${CONFIG.API_BASE_URL}/reports/month-summary`);
-        if (month) {
-            url.searchParams.append('month', month);
+        try {
+            const params = month ? `?month=${encodeURIComponent(month)}` : '';
+            return await apiGet(`/reports/month-summary${params}`, { showNotification: false });
+        } catch (error) {
+            if (error instanceof APIError) {
+                throw error;
+            }
+            throw new Error('Failed to fetch month summary');
         }
-        return authFetch(url.toString());
     },
 
     /**
@@ -38,11 +28,15 @@ export const ReportService = {
      * @param {string} month - Optional month filter (e.g., 'Apr-2026')
      */
     async getGSTByMonth(month = null) {
-        const url = new URL(`${CONFIG.API_BASE_URL}/reports/gst`);
-        if (month) {
-            url.searchParams.append('month', month);
+        try {
+            const params = month ? `?month=${encodeURIComponent(month)}` : '';
+            return await apiGet(`/reports/gst${params}`, { showNotification: false });
+        } catch (error) {
+            if (error instanceof APIError) {
+                throw error;
+            }
+            throw new Error('Failed to fetch GST data');
         }
-        return authFetch(url.toString());
     },
 
     /**
@@ -50,11 +44,15 @@ export const ReportService = {
      * @param {string} month - Optional month filter (e.g., 'Apr-2026')
      */
     async getGSTSummary(month = null) {
-        const url = new URL(`${CONFIG.API_BASE_URL}/reports/gst-summary`);
-        if (month) {
-            url.searchParams.append('month', month);
+        try {
+            const params = month ? `?month=${encodeURIComponent(month)}` : '';
+            return await apiGet(`/reports/gst-summary${params}`, { showNotification: false });
+        } catch (error) {
+            if (error instanceof APIError) {
+                throw error;
+            }
+            throw new Error('Failed to fetch GST summary');
         }
-        return authFetch(url.toString());
     },
 
     /**
@@ -62,10 +60,14 @@ export const ReportService = {
      * @param {string} month - Optional month filter (e.g., 'Apr-2026')
      */
     async getCompleteDashboard(month = null) {
-        const url = new URL(`${CONFIG.API_BASE_URL}/reports/dashboard`);
-        if (month) {
-            url.searchParams.append('month', month);
+        try {
+            const params = month ? `?month=${encodeURIComponent(month)}` : '';
+            return await apiGet(`/reports/dashboard${params}`, { showNotification: false });
+        } catch (error) {
+            if (error instanceof APIError) {
+                throw error;
+            }
+            throw new Error('Failed to fetch dashboard');
         }
-        return authFetch(url.toString());
     }
 };
